@@ -420,7 +420,7 @@
     node.className = `piece piece-${piece.color}`;
     node.setAttribute("aria-hidden", "true");
     image.className = "piece-img";
-    image.src = `vendor/pieces/wikipedia/${piece.color}${piece.type.toUpperCase()}.svg`;
+    image.src = `./${piece.color}${piece.type.toUpperCase()}.svg`;
     image.alt = "";
     image.draggable = false;
     node.appendChild(image);
