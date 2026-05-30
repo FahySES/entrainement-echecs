@@ -55,7 +55,7 @@ window.EM_PUZZLES = [
     theme: "Attaque à la découverte",
     niveau: "Initiation",
     fen: "8/5k2/8/8/4B3/5N2/3K4/7q w - - 0 1",
-    solution: "f3g5",
+    solution: "Cg5",
     explication: "Le cavalier libère la diagonale du fou vers la dame noire en h1.",
     indice: "Déplace la pièce qui bouche la diagonale du fou."
   },
