@@ -98,15 +98,5 @@ window.EM_PUZZLES = [
     solution: "d3e3",
     explication: "Le roi blanc garde l'opposition de biais et prépare l'avancée du pion.",
     indice: "Le roi doit rester actif devant son pion."
-  },
-  {
-    id: "bnmate-001",
-    categorie: "special",
-    theme: "Roi + Fou + Cavalier contre Roi",
-    niveau: "Guidé",
-    fen: "7k/8/5KN1/5B2/8/8/8/8 w - - 0 1",
-    solution: "f5e6",
-    explication: "En V1, le mode guidé insiste sur la coordination : pousser le roi vers le coin de la couleur du fou.",
-    indice: "Rapproche le fou du roi et garde le cavalier près de lui."
   }
 ];
