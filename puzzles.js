@@ -30,16 +30,6 @@ window.EM_PUZZLES = [
     indice: "Commence par un échec de dame qui force le roi vers b8."
   },
   {
-    id: "pin-001",
-    categorie: "tactic1",
-    theme: "Clouage",
-    niveau: "Débutant",
-    fen: "4k3/4q3/8/8/8/8/4R3/4K3 w - - 0 1",
-    solution: "e2e7",
-    explication: "La tour capture la dame clouée devant le roi noir.",
-    indice: "La pièce noire devant le roi ne peut pas vraiment bouger."
-  },
-  {
     id: "fork-001",
     categorie: "tactic1",
     theme: "Fourchette",
