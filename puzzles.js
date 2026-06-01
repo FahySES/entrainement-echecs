@@ -9,6 +9,26 @@ window.EM_PUZZLES = [
     explication: "La dame va en a8. Elle attaque le roi sur la diagonale et les pièces noires bloquent toutes les fuites.",
     indice: "Cherche une diagonale longue vers le roi noir."
   },
+{
+  id: "mat1-004",
+  categorie: "mate1",
+  theme: "Mat en 1",
+  niveau: "Débutant",
+  fen: "4rrk1/p1p2ppp/5n2/8/5Q2/2P2q2/PP3PRP/RNB4K b - - 0 1",
+  solution: "e8e1",
+  explication: "",
+  indice: "Cherche une tour qui peut atteindre la première rangée."
+},
+{
+  id: "mat1-003",
+  categorie: "mate1",
+  theme: "Mat en 1",
+  niveau: "Débutant",
+  fen: "8/1r4kp/p5p1/4q3/PQ6/7P/2pp2P1/5R1K w - - 0 1",
+  solution: "b4f8",
+  explication: "",
+  indice: "Cherche une case où la dame peut donner échec tout en contrôlant les cases de fuite du roi."
+},
   {
     id: "mat1-002",
     categorie: "mate1",
@@ -25,9 +45,8 @@ window.EM_PUZZLES = [
     theme: "Mat en 2",
     niveau: "Guidé",
     fen: "k7/8/KQ6/8/8/8/8/8 w - - 0 1",
-    solution: ["b6c6", "a8b8", "c6b7"],
-    explication: "La dame donne échec en c6, le roi noir est forcé en b8, puis Db7 mat.",
-    indice: "Commence par un échec de dame qui force le roi vers b8."
+    solution: "b6b7",
+    explication: "La dame donne un baiser mortel au roi."
   },
   {
     id: "fork-001",
@@ -45,19 +64,11 @@ window.EM_PUZZLES = [
     theme: "Attaque à la découverte",
     niveau: "Initiation",
     fen: "8/5k2/8/8/4B3/5N2/3K4/7q w - - 0 1",
-    solution: "Cg5",
+    solution: "f3g5",
+    active: false,
+    commentaireValidation: "Désactivé : plusieurs coups de cavalier quittent f3 et libèrent l'attaque du fou sur la dame h1.",
     explication: "Le cavalier libère la diagonale du fou vers la dame noire en h1.",
     indice: "Déplace la pièce qui bouche la diagonale du fou."
-  },
-  {
-    id: "deflection-001",
-    categorie: "tactic1",
-    theme: "Déviation",
-    niveau: "Initiation",
-    fen: "4k3/4r3/8/8/8/8/4Q3/4K3 w - - 0 1",
-    solution: "e2e7",
-    explication: "La dame attire et élimine la tour qui protégeait la position noire.",
-    indice: "Capture le défenseur principal."
   },
   {
     id: "endgame-q-001",
@@ -79,6 +90,66 @@ window.EM_PUZZLES = [
     explication: "La tour donne le mat sur la première rangée, le roi blanc contrôlant les cases de fuite.",
     indice: "La tour doit attaquer horizontalement le roi enfermé au bord."
   },
+{
+id: "mat1-193",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "5rkr/8/8/8/8/8/8/1Q4K1 w - - 0 1",
+solution: "b1g6",
+explication: "",
+indice: "Cherche une diagonale de la dame."
+},
+{
+id: "mat1-194",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "3bkr2/R7/8/7N/8/8/8/7K w - - 0 1",
+solution: "h5g7",
+explication: "",
+indice: "Le cavalier peut attaquer le roi tout en étant protégé."
+},
+{
+id: "mat1-195",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "3qr3/2p1k3/8/2N1P3/8/8/6Q1/7K w - - 0 1",
+solution: "g2g5",
+explication: "",
+indice: "La dame doit donner échec sur une diagonale."
+},
+{
+id: "mat1-196",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "rn1q1b1r/ppp1kBpp/3p4/4N3/8/2P5/PPP2PPP/R1Bb1RK1 w - - 0 1",
+solution: "c1g5",
+explication: "",
+indice: "Le fou blanc peut exploiter la diagonale vers le roi."
+},
+{
+id: "mat1-197",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "3q1b1r/4kBpp/3p4/4N3/8/2N5/5PPP/6K1 w - - 0 1",
+solution: "c3d5",
+explication: "",
+indice: "Un saut de cavalier ferme toutes les cases."
+},
+{
+id: "mat1-198",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "1r1q1r1k/6pp/5p2/4N3/2B5/8/1PP5/2K4R w - - 0 1",
+solution: "e5g6",
+explication: "",
+indice: "Le cavalier profite d’un clouage sur la colonne h."
+},
   {
     id: "endgame-p-001",
     categorie: "endgame",
@@ -89,4 +160,6 @@ window.EM_PUZZLES = [
     explication: "Le roi blanc garde l'opposition de biais et prépare l'avancée du pion.",
     indice: "Le roi doit rester actif devant son pion."
   }
+];
+
 ];
