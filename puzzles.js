@@ -80,4 +80,14 @@ window.EM_PUZZLES = [
     explication: "Le roi blanc garde l'opposition de biais et prépare l'avancée du pion.",
     indice: "Le roi doit rester actif devant son pion."
   },
+  {
+id: "mat1-193",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "5rkr/8/8/8/8/8/8/1Q4K1 w - - 0 1",
+solution: "b1g6",
+explication: "",
+indice: "Cherche une diagonale de la dame."
+},
 ];
