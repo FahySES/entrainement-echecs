@@ -10,24 +10,16 @@ window.EM_PUZZLES = [
     indice: "Cherche une diagonale longue vers le roi noir."
   },
 {
+{
   id: "mat1-004",
-  categorie: "mate1",
-  theme: "Mat en 1",
-  niveau: "Débutant",
-  fen: "4rrk1/p1p2ppp/5n2/8/5Q2/2P2q2/PP3PRP/RNB4K b - - 0 1",
-  solution: "e8e1",
-  explication: "",
-  indice: "Cherche une tour qui peut atteindre la première rangée."
+  active: false,
+  ...
 },
 {
   id: "mat1-003",
-  categorie: "mate1",
-  theme: "Mat en 1",
-  niveau: "Débutant",
-  fen: "8/1r4kp/p5p1/4q3/PQ6/7P/2pp2P1/5R1K w - - 0 1",
-  solution: "b4f8",
-  explication: "",
-  indice: "Cherche une case où la dame peut donner échec tout en contrôlant les cases de fuite du roi."
+  active: false,
+  ...
+}
 },
   {
     id: "mat1-002",
