@@ -386,7 +386,7 @@ button.secondary {
 
 .piece {
   position: absolute;
-  inset: 4%;
+  inset: 2%;
   z-index: 1;
   display: grid;
   place-items: center;
