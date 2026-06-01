@@ -90,66 +90,6 @@ window.EM_PUZZLES = [
     explication: "La tour donne le mat sur la première rangée, le roi blanc contrôlant les cases de fuite.",
     indice: "La tour doit attaquer horizontalement le roi enfermé au bord."
   },
-{
-id: "mat1-193",
-categorie: "mate1",
-theme: "Mat en 1",
-niveau: "Débutant",
-fen: "5rkr/8/8/8/8/8/8/1Q4K1 w - - 0 1",
-solution: "b1g6",
-explication: "",
-indice: "Cherche une diagonale de la dame."
-},
-{
-id: "mat1-194",
-categorie: "mate1",
-theme: "Mat en 1",
-niveau: "Débutant",
-fen: "3bkr2/R7/8/7N/8/8/8/7K w - - 0 1",
-solution: "h5g7",
-explication: "",
-indice: "Le cavalier peut attaquer le roi tout en étant protégé."
-},
-{
-id: "mat1-195",
-categorie: "mate1",
-theme: "Mat en 1",
-niveau: "Débutant",
-fen: "3qr3/2p1k3/8/2N1P3/8/8/6Q1/7K w - - 0 1",
-solution: "g2g5",
-explication: "",
-indice: "La dame doit donner échec sur une diagonale."
-},
-{
-id: "mat1-196",
-categorie: "mate1",
-theme: "Mat en 1",
-niveau: "Débutant",
-fen: "rn1q1b1r/ppp1kBpp/3p4/4N3/8/2P5/PPP2PPP/R1Bb1RK1 w - - 0 1",
-solution: "c1g5",
-explication: "",
-indice: "Le fou blanc peut exploiter la diagonale vers le roi."
-},
-{
-id: "mat1-197",
-categorie: "mate1",
-theme: "Mat en 1",
-niveau: "Débutant",
-fen: "3q1b1r/4kBpp/3p4/4N3/8/2N5/5PPP/6K1 w - - 0 1",
-solution: "c3d5",
-explication: "",
-indice: "Un saut de cavalier ferme toutes les cases."
-},
-{
-id: "mat1-198",
-categorie: "mate1",
-theme: "Mat en 1",
-niveau: "Débutant",
-fen: "1r1q1r1k/6pp/5p2/4N3/2B5/8/1PP5/2K4R w - - 0 1",
-solution: "e5g6",
-explication: "",
-indice: "Le cavalier profite d’un clouage sur la colonne h."
-},
   {
     id: "endgame-p-001",
     categorie: "endgame",
