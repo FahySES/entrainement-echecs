@@ -9,18 +9,6 @@ window.EM_PUZZLES = [
     explication: "La dame va en a8. Elle attaque le roi sur la diagonale et les pièces noires bloquent toutes les fuites.",
     indice: "Cherche une diagonale longue vers le roi noir."
   },
-{
-{
-  id: "mat1-004",
-  active: false,
-  ...
-},
-{
-  id: "mat1-003",
-  active: false,
-  ...
-}
-},
   {
     id: "mat1-002",
     categorie: "mate1",
