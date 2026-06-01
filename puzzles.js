@@ -79,7 +79,7 @@ window.EM_PUZZLES = [
     solution: "d3e3",
     explication: "Le roi blanc garde l'opposition de biais et prépare l'avancée du pion.",
     indice: "Le roi doit rester actif devant son pion."
-  }
+  },
   {
 id: "mat1-193",
 categorie: "mate1",
