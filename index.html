@@ -8,13 +8,14 @@
   </head>
   <body>
     <main class="app-shell">
-      <div class="score" aria-live="polite">
-        <span id="successCount">0</span> réussites / <span id="attemptCount">0</span> tentatives
-      </div>
-
       <section class="trainer" aria-label="Application d'entraînement aux échecs">
+        <div class="puzzle-card">
+          <p class="message" id="message" aria-live="polite">Trait aux blancs</p>
+          <p class="hint" id="hintText" hidden></p>
+        </div>
+
         <aside class="controls">
-          <label for="categorySelect">Type d'exercice</label>
+          <label class="sr-only" for="categorySelect">Type d'exercice</label>
           <select id="categorySelect"></select>
 
           <button id="newPuzzleBtn" type="button">Nouvel exercice</button>
@@ -27,23 +28,20 @@
 
         <div class="board-panel">
           <div id="board" class="board" role="grid" aria-label="Échiquier interactif"></div>
-          <div class="mobile-actions">
-            <button id="mobileHintBtn" type="button">Indice</button>
-            <button id="mobileSolutionBtn" type="button">Solution</button>
+          <div class="score" aria-live="polite">
+            0 réussite / 0 tentative
           </div>
         </div>
 
-        <div class="puzzle-card">
-          <p class="meta" id="puzzleMeta">-</p>
-          <p class="message" id="message" aria-live="polite">À toi de jouer</p>
-          <p class="hint" id="hintText" hidden></p>
+        <div class="correction-card">
+          <p class="correction-message" id="correctionMessage" aria-live="polite"></p>
           <p class="explanation" id="explanationText" hidden></p>
         </div>
       </section>
     </main>
 
-    <script src="chess.min.js"></script>
-    <script src="puzzles.js"></script>
+    <script src="vendor/chess.min.js"></script>
+    <script src="data/puzzles.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
