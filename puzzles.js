@@ -161,5 +161,3 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
     indice: "Le roi doit rester actif devant son pion."
   }
 ];
-
-];
