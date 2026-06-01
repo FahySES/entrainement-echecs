@@ -90,4 +90,14 @@ solution: "b1g6",
 explication: "",
 indice: "Cherche une diagonale de la dame."
 },
+  {
+id: "mat1-194",
+categorie: "mate1",
+theme: "Mat en 1",
+niveau: "Débutant",
+fen: "3bkr2/R7/8/7N/8/8/8/7K w - - 0 1",
+solution: "h5g7",
+explication: "",
+indice: "Le cavalier peut attaquer le roi tout en étant protégé."
+},
 ];
