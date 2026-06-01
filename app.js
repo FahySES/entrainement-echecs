@@ -2,7 +2,7 @@
   "use strict";
 
   const CATEGORY_LABELS = {
-    all: "Tous les exercices",
+    all: "Type d’exercice",
     mate1: "Exercices de mat en 1",
     mate2: "Exercices de mat en 2",
     tactic1: "Tactiques en 1 coup",
@@ -34,11 +34,15 @@
     orientation: "w",
     lineIndex: 0,
     solved: false,
+    solutionAnimating: false,
+    solutionTimer: null,
+    feedbackTimer: null,
     successes: 0,
     attempts: 0
   };
 
   const boardEl = document.getElementById("board");
+  const puzzleCardEl = document.querySelector(".puzzle-card");
   const categorySelect = document.getElementById("categorySelect");
   const newPuzzleBtn = document.getElementById("newPuzzleBtn");
   const hintBtn = document.getElementById("hintBtn");
@@ -48,9 +52,8 @@
   const messageEl = document.getElementById("message");
   const hintEl = document.getElementById("hintText");
   const explanationEl = document.getElementById("explanationText");
-  const metaEl = document.getElementById("puzzleMeta");
-  const successEl = document.getElementById("successCount");
-  const attemptEl = document.getElementById("attemptCount");
+  const correctionMessageEl = document.getElementById("correctionMessage");
+  const scoreEl = document.querySelector(".score");
 
   function boot() {
     if (typeof Chess === "undefined") {
@@ -81,9 +84,15 @@
     newPuzzleBtn.addEventListener("click", loadRandomPuzzle);
     categorySelect.addEventListener("change", loadRandomPuzzle);
     hintBtn.addEventListener("click", showHint);
-    mobileHintBtn.addEventListener("click", showHint);
     solutionBtn.addEventListener("click", showSolution);
-    mobileSolutionBtn.addEventListener("click", showSolution);
+
+    if (mobileHintBtn) {
+      mobileHintBtn.addEventListener("click", showHint);
+    }
+
+    if (mobileSolutionBtn) {
+      mobileSolutionBtn.addEventListener("click", showSolution);
+    }
   }
 
   function loadRandomPuzzle() {
@@ -94,7 +103,7 @@
 
     if (pool.length === 0) {
       clearCurrentPuzzle();
-      setMessage("Aucun exercice valide pour cette catégorie.", true);
+      setCorrection("Aucun exercice valide pour cette catégorie.", true);
       return;
     }
 
@@ -105,14 +114,16 @@
     state.selected = null;
     state.lineIndex = 0;
     state.solved = false;
+    state.solutionAnimating = false;
+    window.clearTimeout(state.solutionTimer);
     state.orientation = state.game.turn();
 
     hintEl.hidden = true;
     explanationEl.hidden = true;
     hintEl.textContent = "";
     explanationEl.textContent = "";
-    metaEl.textContent = `${nextPuzzle.theme} · ${nextPuzzle.niveau} · ${turnLabel(state.game.turn())} au trait`;
-    setMessage("À toi de jouer");
+    setTurnIndicator();
+    setCorrection("");
     renderBoard();
   }
 
@@ -122,26 +133,40 @@
     state.selected = null;
     state.lineIndex = 0;
     state.solved = true;
+    boardEl.classList.remove("board-feedback-correct", "board-feedback-wrong");
+    puzzleCardEl.classList.remove("correct", "wrong");
+    state.solutionAnimating = false;
+    window.clearTimeout(state.solutionTimer);
     boardEl.innerHTML = "";
     hintEl.hidden = true;
     explanationEl.hidden = true;
     hintEl.textContent = "";
     explanationEl.textContent = "";
-    metaEl.textContent = "-";
+    setCorrection("");
   }
 
   function validatePuzzleDatabase(puzzles) {
     const report = {
       validPuzzles: 0,
       invalidFen: [],
+      disabledPuzzles: [],
       mate1NoSolution: [],
       mate1MultipleSolutions: [],
-      mate1ExpectedMismatch: []
+      mate1ExpectedMismatch: [],
+      tacticInvalidSolution: []
     };
 
     const validPuzzles = [];
 
     puzzles.forEach((puzzle) => {
+      if (puzzle.active === false) {
+        report.disabledPuzzles.push({
+          id: puzzle.id || "(sans id)",
+          commentaireValidation: puzzle.commentaireValidation || "Puzzle désactivé."
+        });
+        return;
+      }
+
       const game = createGameFromFen(puzzle.fen);
 
       if (!game) {
@@ -177,11 +202,34 @@
         puzzle.computedMateSolutions = mateMoves;
       }
 
+      if (puzzle.categorie === "tactic1" && !isFirstSolutionMoveLegal(puzzle)) {
+        report.tacticInvalidSolution.push({
+          id: puzzle.id || "(sans id)",
+          solution: Array.isArray(puzzle.solution) ? puzzle.solution[0] : puzzle.solution
+        });
+        return;
+      }
+
       validPuzzles.push(puzzle);
     });
 
     report.validPuzzles = validPuzzles.length;
     return { validPuzzles, report };
+  }
+
+  function isFirstSolutionMoveLegal(puzzle) {
+    const game = createGameFromFen(puzzle.fen);
+    const move = Array.isArray(puzzle.solution) ? puzzle.solution[0] : puzzle.solution;
+
+    if (!game || !move) {
+      return false;
+    }
+
+    return Boolean(game.move({
+      from: move.slice(0, 2),
+      to: move.slice(2, 4),
+      promotion: move.slice(4) || "q"
+    }));
   }
 
   function createGameFromFen(fen) {
@@ -226,11 +274,16 @@
     console.group("Rapport de validation des puzzles");
     console.log(`Puzzles valides : ${report.validPuzzles}`);
     console.log(`FEN invalides : ${report.invalidFen.length}`, report.invalidFen);
+    console.log(`Puzzles désactivés : ${report.disabledPuzzles.length}`, report.disabledPuzzles);
     console.log(`Mats en 1 avec 0 solution : ${report.mate1NoSolution.length}`, report.mate1NoSolution);
     console.log(
       `Mats en 1 avec plusieurs solutions : ${report.mate1MultipleSolutions.length}`,
       report.mate1MultipleSolutions
     );
+
+    if (report.tacticInvalidSolution.length > 0) {
+      console.warn("Tactiques dont la solution est illégale :", report.tacticInvalidSolution);
+    }
 
     if (report.mate1ExpectedMismatch.length > 0) {
       console.warn(
@@ -279,10 +332,12 @@
         boardEl.appendChild(square);
       });
     });
+
+    boardEl.appendChild(createBoardOverlay());
   }
 
   function handleSquareClick(squareName) {
-    if (state.solved) {
+    if (state.solved || state.solutionAnimating) {
       return;
     }
 
@@ -311,7 +366,7 @@
 
     if (piece && piece.color === state.game.turn()) {
       state.selected = squareName;
-      setMessage("Choisis la case d'arrivée");
+      setCorrection("Choisis la case d'arrivée");
       renderBoard();
     }
   }
@@ -326,14 +381,17 @@
 
     if (state.puzzle.categorie === "mate1") {
       if (isExpected && state.game.in_checkmate()) {
+        flashBoard("correct");
         markSuccess("Bravo, c'est mat !");
         return;
       }
+      flashBoard("wrong");
       failAndReset("Essaie encore : le roi noir n'est pas mat.");
       return;
     }
 
     if (!isExpected) {
+      flashBoard("wrong");
       failAndReset("Essaie encore");
       return;
     }
@@ -343,6 +401,7 @@
       return;
     }
 
+    flashBoard("correct");
     markSuccess("Bravo");
   }
 
@@ -360,23 +419,26 @@
 
       if (played) {
         state.lineIndex += 1;
-        setMessage("Bien. Réponds maintenant au coup forcé.");
+        flashBoard("correct");
+        setCorrection("Bien. Réponds maintenant au coup forcé.");
         renderBoard();
         return;
       }
     }
 
+    flashBoard("correct");
     markSuccess(state.game.in_checkmate() ? "Bravo, c'est mat !" : "Bravo");
   }
 
   function failAndReset(text) {
-    setMessage(text, true);
+    setCorrection(text, true);
     window.setTimeout(() => {
       state.game = new Chess(state.puzzle.fen);
       state.selected = null;
       state.lineIndex = 0;
       renderBoard();
-      setMessage("À toi de jouer");
+      setTurnIndicator();
+      setCorrection("");
     }, 800);
   }
 
@@ -384,7 +446,7 @@
     state.solved = true;
     state.successes += 1;
     updateScore();
-    setMessage(text);
+    setCorrection(text);
     explanationEl.textContent = state.puzzle.explication;
     explanationEl.hidden = false;
   }
@@ -420,7 +482,7 @@
     node.className = `piece piece-${piece.color}`;
     node.setAttribute("aria-hidden", "true");
     image.className = "piece-img";
-    image.src = `./${piece.color}${piece.type.toUpperCase()}.svg`;
+    image.src = `vendor/pieces/wikipedia/${piece.color}${piece.type.toUpperCase()}.svg`;
     image.alt = "";
     image.draggable = false;
     node.appendChild(image);
@@ -467,19 +529,223 @@
       return;
     }
 
-    const solution = solutionLine().join(" ");
+    const solution = solutionLineToFrenchNotation(state.puzzle);
     explanationEl.textContent = `Solution : ${solution}. ${state.puzzle.explication}`;
     explanationEl.hidden = false;
+    animateSolutionMove();
+  }
+
+  function animateSolutionMove() {
+    if (!state.game || state.solved || state.solutionAnimating) {
+      return;
+    }
+
+    const uci = expectedMove();
+    const from = uci.slice(0, 2);
+    const to = uci.slice(2, 4);
+    const piece = state.game.get(from);
+    const fromSquare = boardEl.querySelector(`[data-square="${from}"]`);
+    const toSquare = boardEl.querySelector(`[data-square="${to}"]`);
+    const overlay = boardEl.querySelector(".board-overlay");
+
+    if (!piece || !fromSquare || !toSquare || !overlay) {
+      return;
+    }
+
+    const testGame = new Chess(state.game.fen());
+    const legalMove = testGame.move({
+      from,
+      to,
+      promotion: uci.slice(4) || "q"
+    });
+
+    if (!legalMove) {
+      return;
+    }
+
+    state.solutionAnimating = true;
+    overlay.innerHTML = "";
+    const geometry = getMoveGeometry(fromSquare, toSquare);
+    const arrow = createSolutionArrow(geometry);
+    const movingPiece = createAnimatedPiece(piece, geometry);
+    const originalPiece = fromSquare.querySelector(".piece");
+
+    if (originalPiece) {
+      originalPiece.classList.add("piece-hidden-during-solution");
+    }
+
+    overlay.appendChild(arrow);
+    overlay.appendChild(movingPiece);
+    window.requestAnimationFrame(() => {
+      movingPiece.style.transform = `translate(${geometry.dx}px, ${geometry.dy}px)`;
+    });
+
+    window.clearTimeout(state.solutionTimer);
+    state.solutionTimer = window.setTimeout(() => {
+      state.game.move({
+        from,
+        to,
+        promotion: uci.slice(4) || "q"
+      });
+      state.selected = null;
+      state.solved = true;
+      state.solutionAnimating = false;
+      renderBoard();
+      const refreshedOverlay = boardEl.querySelector(".board-overlay");
+      refreshedOverlay.appendChild(createSolutionArrow(geometry));
+      window.setTimeout(() => {
+        refreshedOverlay.innerHTML = "";
+      }, 450);
+    }, 760);
+  }
+
+  function createBoardOverlay() {
+    const overlay = document.createElement("div");
+    overlay.className = "board-overlay";
+    overlay.setAttribute("aria-hidden", "true");
+    return overlay;
+  }
+
+  function getMoveGeometry(fromSquare, toSquare) {
+    const boardRect = boardEl.getBoundingClientRect();
+    const fromRect = fromSquare.getBoundingClientRect();
+    const toRect = toSquare.getBoundingClientRect();
+    const squareSize = fromRect.width;
+    const fromX = fromRect.left - boardRect.left + fromRect.width / 2;
+    const fromY = fromRect.top - boardRect.top + fromRect.height / 2;
+    const toX = toRect.left - boardRect.left + toRect.width / 2;
+    const toY = toRect.top - boardRect.top + toRect.height / 2;
+
+    return {
+      fromX,
+      fromY,
+      toX,
+      toY,
+      dx: toX - fromX,
+      dy: toY - fromY,
+      pieceSize: squareSize * 0.9
+    };
+  }
+
+  function createSolutionArrow(geometry) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+    const markerPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    const length = Math.hypot(geometry.dx, geometry.dy) || 1;
+    const trim = Math.min(geometry.pieceSize * 0.34, length * 0.22);
+    const startX = geometry.fromX + (geometry.dx / length) * trim;
+    const startY = geometry.fromY + (geometry.dy / length) * trim;
+    const endX = geometry.toX - (geometry.dx / length) * trim;
+    const endY = geometry.toY - (geometry.dy / length) * trim;
+
+    svg.classList.add("solution-arrow");
+    svg.setAttribute("viewBox", `0 0 ${boardEl.clientWidth} ${boardEl.clientHeight}`);
+    marker.setAttribute("id", "solution-arrow-head");
+    marker.setAttribute("markerWidth", "9");
+    marker.setAttribute("markerHeight", "9");
+    marker.setAttribute("refX", "7");
+    marker.setAttribute("refY", "4.5");
+    marker.setAttribute("orient", "auto");
+    marker.setAttribute("markerUnits", "strokeWidth");
+    markerPath.setAttribute("d", "M0,0 L8,4.5 L0,9 Z");
+    marker.appendChild(markerPath);
+    defs.appendChild(marker);
+    line.setAttribute("x1", startX);
+    line.setAttribute("y1", startY);
+    line.setAttribute("x2", endX);
+    line.setAttribute("y2", endY);
+    line.setAttribute("marker-end", "url(#solution-arrow-head)");
+    svg.appendChild(defs);
+    svg.appendChild(line);
+    return svg;
+  }
+
+  function createAnimatedPiece(piece, geometry) {
+    const node = createPieceNode(piece);
+    node.classList.add("solution-moving-piece");
+    node.style.width = `${geometry.pieceSize}px`;
+    node.style.height = `${geometry.pieceSize}px`;
+    node.style.left = `${geometry.fromX - geometry.pieceSize / 2}px`;
+    node.style.top = `${geometry.fromY - geometry.pieceSize / 2}px`;
+    return node;
+  }
+
+  function solutionLineToFrenchNotation(puzzle) {
+    const game = createGameFromFen(puzzle.fen);
+
+    if (!game) {
+      return solutionLine().join(" ");
+    }
+
+    return solutionLine().map((uci) => moveToFrenchNotation(game, uci)).join(" ");
+  }
+
+  function moveToFrenchNotation(game, uci) {
+    const move = game.move({
+      from: uci.slice(0, 2),
+      to: uci.slice(2, 4),
+      promotion: uci.slice(4) || "q"
+    });
+
+    if (!move) {
+      return uci;
+    }
+
+    return sanToFrench(move.san);
+  }
+
+  function sanToFrench(san) {
+    return san.replace(/[KQRBN]/g, (piece) => {
+      return {
+        K: "R",
+        Q: "D",
+        R: "T",
+        B: "F",
+        N: "C"
+      }[piece];
+    });
+  }
+
+  function flashBoard(type) {
+    window.clearTimeout(state.feedbackTimer);
+    boardEl.classList.remove("board-feedback-correct", "board-feedback-wrong");
+    puzzleCardEl.classList.remove("correct", "wrong");
+    void boardEl.offsetWidth;
+    void puzzleCardEl.offsetWidth;
+    boardEl.classList.add(type === "correct" ? "board-feedback-correct" : "board-feedback-wrong");
+    puzzleCardEl.classList.add(type === "correct" ? "correct" : "wrong");
+
+    state.feedbackTimer = window.setTimeout(() => {
+      boardEl.classList.remove("board-feedback-correct", "board-feedback-wrong");
+      puzzleCardEl.classList.remove("correct", "wrong");
+    }, 900);
   }
 
   function updateScore() {
-    successEl.textContent = state.successes;
-    attemptEl.textContent = state.attempts;
+    const successLabel = state.successes > 1 ? "réussites" : "réussite";
+    const attemptLabel = state.attempts > 1 ? "tentatives" : "tentative";
+    scoreEl.textContent = `${state.successes} ${successLabel} / ${state.attempts} ${attemptLabel}`;
+  }
+
+  function setTurnIndicator() {
+    if (!state.game) {
+      setMessage("Trait aux blancs");
+      return;
+    }
+
+    setMessage(state.game.turn() === "w" ? "Trait aux blancs" : "Trait aux noirs");
   }
 
   function setMessage(text, isError) {
     messageEl.textContent = text;
     messageEl.classList.toggle("error", Boolean(isError));
+  }
+
+  function setCorrection(text, isError) {
+    correctionMessageEl.textContent = text;
+    correctionMessageEl.classList.toggle("error", Boolean(isError));
   }
 
   function turnLabel(color) {
