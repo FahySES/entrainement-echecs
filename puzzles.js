@@ -161,15 +161,5 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
   explication: "La tour attire le cavalier noir en f7, puis le pion g donne mat.",
   indice: "La tour se sacrifie pour ouvrir une case de mat au pion."
 },
-{
-  id: "mat2-1186",
-  categorie: "mate2",
-  theme: "Mat en 2",
-  niveau: "Guidé",
-  fen: "1Q6/5kpn/5bN1/7P/8/2q4B/8/7K w - - 0 1",
-  solution: ["b8g8", "f7g8", "h3e6"]
-  explication: "",
-  indice: "La dame peut se sacrifier pour attirer le roi noir sur une case fatale."
-},
 ];
 
