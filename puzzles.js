@@ -168,7 +168,7 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
   niveau: "Guidé",
   fen: "1Q6/5kpn/5bN1/7P/8/2q4B/8/7K w - - 0 1",
   solution: ["b8g8", "f7g8", "h3e6"]
-  explication: "Le sacrifice de dame permet d'attirer le roi",
+  explication: "",
   indice: "La dame peut se sacrifier pour attirer le roi noir sur une case fatale."
 },
 ];
