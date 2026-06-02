@@ -162,16 +162,14 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
   indice: "La tour se sacrifie pour ouvrir une case de mat au pion."
 },
 {
-  id: "mat2-1187",
+  id: "mat2-1186",
   categorie: "mate2",
   theme: "Mat en 2",
   niveau: "Guidé",
-  fen: "k7/2p1r3/K1P5/3Nb3/3RB3/8/8/8 w - - 0 1",
-  solution: ["d5b6", "a8b8", "d4d8"],
-  active: false,
-  commentaireValidation: "Désactivé : après Cb6+, les Noirs ont deux réponses légales (Rb8 et cxb6), donc la réponse noire n’est pas forcée.",
+  fen: "1Q6/5kpn/5bN1/7P/8/2q4B/8/7K w - - 0 1",
+  solution: "b8g8",
   explication: "",
-  indice: "Le cavalier peut se sacrifier pour ouvrir une ligne décisive à la tour."
+  indice: "La dame peut se sacrifier pour attirer le roi noir sur une case fatale."
 },
 ];
 
