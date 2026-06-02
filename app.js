@@ -406,28 +406,40 @@
   }
 
   function playGuidedLine() {
-    state.lineIndex += 1;
     const line = solutionLine();
-    const reply = line[state.lineIndex];
 
-    if (reply) {
-      const played = state.game.move({
-        from: reply.slice(0, 2),
-        to: reply.slice(2, 4),
-        promotion: reply.slice(4) || "q"
+    state.lineIndex += 1;
+
+    if (state.lineIndex === 1) {
+      const blackReply = line[state.lineIndex];
+      const played = blackReply && state.game.move({
+        from: blackReply.slice(0, 2),
+        to: blackReply.slice(2, 4),
+        promotion: blackReply.slice(4) || "q"
       });
 
-      if (played) {
-        state.lineIndex += 1;
-        flashBoard("correct");
-        setCorrection("Bien. Réponds maintenant au coup forcé.");
-        renderBoard();
+      if (!played) {
+        flashBoard("wrong");
+        failAndReset("La réponse noire forcée est invalide.");
         return;
       }
+
+      state.lineIndex += 1;
+      flashBoard("correct");
+      setCorrection("Bien. Trouve maintenant le mat.");
+      setTurnIndicator();
+      renderBoard();
+      return;
     }
 
-    flashBoard("correct");
-    markSuccess(state.game.in_checkmate() ? "Bravo, c'est mat !" : "Bravo");
+    if (state.game.in_checkmate()) {
+      flashBoard("correct");
+      markSuccess("Bravo, c'est mat !");
+      return;
+    }
+
+    flashBoard("wrong");
+    failAndReset("Essaie encore : ce n'est pas mat.");
   }
 
   function failAndReset(text) {
@@ -482,7 +494,7 @@
     node.className = `piece piece-${piece.color}`;
     node.setAttribute("aria-hidden", "true");
     image.className = "piece-img";
-    image.src = `${piece.color}${piece.type.toUpperCase()}.svg`;
+    image.src = `vendor/pieces/wikipedia/${piece.color}${piece.type.toUpperCase()}.svg`;
     image.alt = "";
     image.draggable = false;
     node.appendChild(image);
