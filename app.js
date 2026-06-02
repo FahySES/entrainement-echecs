@@ -608,7 +608,7 @@
       window.setTimeout(() => {
         refreshedOverlay.innerHTML = "";
       }, 450);
-    }, 760);
+    }, 2000);
   }
 
   function createBoardOverlay() {
