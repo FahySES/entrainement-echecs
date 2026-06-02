@@ -607,7 +607,7 @@
       refreshedOverlay.appendChild(createSolutionArrow(geometry));
       window.setTimeout(() => {
         refreshedOverlay.innerHTML = "";
-      }, 450);
+      }, 900);
     }, 2000);
   }
 
