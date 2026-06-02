@@ -150,5 +150,28 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
     solution: "d3e3",
     explication: "Le roi blanc garde l'opposition de biais et prépare l'avancée du pion.",
     indice: "Le roi doit rester actif devant son pion."
-  }
+  },
+{
+  id: "mat2-1162",
+  categorie: "mate2",
+  theme: "Mat en 2",
+  niveau: "Guidé",
+  fen: "5k2/4n2R/5NPP/4n3/7K/8/8/8 w - - 0 1",
+  solution: ["h7f7", "e5f7", "g6g7"],
+  explication: "La tour attire le cavalier noir en f7, puis le pion g donne mat.",
+  indice: "La tour se sacrifie pour ouvrir une case de mat au pion."
+},
+{
+  id: "mat2-1187",
+  categorie: "mate2",
+  theme: "Mat en 2",
+  niveau: "Guidé",
+  fen: "k7/2p1r3/K1P5/3Nb3/3RB3/8/8/8 w - - 0 1",
+  solution: ["d5b6", "a8b8", "d4d8"],
+  active: false,
+  commentaireValidation: "Désactivé : après Cb6+, les Noirs ont deux réponses légales (Rb8 et cxb6), donc la réponse noire n’est pas forcée.",
+  explication: "",
+  indice: "Le cavalier peut se sacrifier pour ouvrir une ligne décisive à la tour."
+},
 ];
+
