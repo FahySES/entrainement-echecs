@@ -397,10 +397,10 @@
       return;
     }
 
-    if (state.puzzle.categorie === "mate2") {
-      playGuidedLine();
-      return;
-    }
+if (state.puzzle.categorie === "mate2" || state.puzzle.categorie === "mate3") {
+  playGuidedLine();
+  return;
+}
 
     flashBoard("correct");
     markSuccess("Bravo");
