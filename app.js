@@ -441,11 +441,6 @@ function playGuidedLine() {
   flashBoard("correct");
   markSuccess(state.game.in_checkmate() ? "Bravo, c'est mat !" : "Bravo");
 }
-
-    flashBoard("wrong");
-    failAndReset("Essaie encore : ce n'est pas mat.");
-  }
-
   function failAndReset(text) {
     setCorrection(text, true);
     window.setTimeout(() => {
