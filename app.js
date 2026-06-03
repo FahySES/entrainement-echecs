@@ -3,8 +3,8 @@
 
   const CATEGORY_LABELS = {
     all: "Type d’exercice",
-    mate1: "Exercices de mat en 1",
-    mate2: "Exercices de mat en 2",
+    mate1: "Mat en 1",
+    mate2: "Mat en 2",
     tactic1: "Tactiques en 1 coup",
     endgame: "Finales basiques",
     special: "Entraînement spécial"
