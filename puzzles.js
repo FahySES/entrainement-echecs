@@ -174,12 +174,12 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
 {
   id: "special-001",
   categorie: "special",
-  theme: "Gain de marériel",
+  theme: "Gain de dame",
   niveau: "Guidé",
   fen: "5rk1/5ppp/2BQ4/6n1/2PR4/5p1P/P5PK/4q3 w - - 0 1",
   solution: ["d6f8", "g8f8", "d4d8", "f8e7", "d8e8"],
-  explication: "La combinaison force l'échange des pièces lourdes et permet aux Blancs de gagner la dame noire.",
-  indice: "Cherche d'abord un sacrifice de dame pour attirer le roi noir."
+  explication: "Après le sacrifice de dame, la tour entre en d8 avec échec. Le roi noir se déplace en e7, puis Te8+ gagne la dame.",
+  indice: "Commence par attirer le roi noir sur f8."
 },
 ];
 
