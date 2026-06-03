@@ -397,7 +397,11 @@
       return;
     }
 
-if (state.puzzle.categorie === "mate2" || state.puzzle.categorie === "mate3") {
+if (
+  state.puzzle.categorie === "mate2" ||
+  state.puzzle.categorie === "mate3" ||
+  state.puzzle.categorie === "special"
+) {
   playGuidedLine();
   return;
 }
