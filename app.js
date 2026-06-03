@@ -5,7 +5,7 @@
     all: "Type d’exercice",
     mate1: "Mat en 1",
     mate2: "Mat en 2",
-    mate3: "Mats en 3",
+    mate3: "Mat en 3",
     tactic1: "Tactique",
     endgame: "Finale",
     special: "Entraînement spécial"
