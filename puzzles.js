@@ -181,5 +181,15 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
   explication: "Après le sacrifice de dame, la tour entre en d8 avec échec. Le roi noir se déplace en e7, puis Te8+ gagne la dame.",
   indice: "Commence par attirer le roi noir sur f8."
 },
+  {
+  "id": "mat1-106",
+  "categorie": "mate1",
+  "theme": "Mat en 1 (Clouage)",
+  "niveau": "Intermédiaire",
+  "fen": "8/8/8/8/8/3k4/8/4K1R1 w KQ - 0 1",
+  "solution": "g1g4",
+  "explication": "La Tour mate en **g4** en exploitant le **clouage** du Roi noir par le Roi blanc (sur la colonne e). Le Roi noir ne peut pas capturer la Tour à cause du clouage.",
+  "indice": "La Tour peut mater en ligne droite, mais attention aux pièces clouées."
+}
 ];
 
