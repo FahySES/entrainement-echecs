@@ -191,5 +191,15 @@ indice: "Le cavalier profite d’un clouage sur la colonne h."
   explication: "La tour mate en g4.",
   indice: "La tour peut mater en ligne droite."
 },
+  {
+  id: "mat2-110",
+  categorie: "mate2",
+  theme: "Mat en 2",
+  niveau: "Guidé",
+  fen: "5rk1/p1R4p/3Qpp2/3b4/8/P7/1q3PPP/6K1 w - - 0 1",
+  solution: ["d6g3", "g8h8", "g3g7"],
+  explication: "La dame donne échec en g3, force le roi noir en h8, puis mate en g7.",
+  indice: "Cherche un échec de dame qui force le roi dans le coin."
+},
 ];
 
